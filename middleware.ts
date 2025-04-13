@@ -1,13 +1,20 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
 const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)'])
+// Crear un matcher para la ruta de UploadThing
+const isUploadthingRoute = createRouteMatcher(['/api/uploadthing(.*)'])
 
 export default clerkMiddleware(async (auth, request) => {
- const url = new URL(request.url)
+  // Ignorar la ruta de UploadThing en el middleware de Clerk
+  if (isUploadthingRoute(request)) {
+    return; // No hacer nada, permitir que la solicitud continúe
+  }
 
- if (url.pathname === "/" || !isPublicRoute(request)){
+  const url = new URL(request.url)
+
+  if (url.pathname === "/" || !isPublicRoute(request)){
     await auth.protect()
- }
+  }
 })
 
 export const config = {
