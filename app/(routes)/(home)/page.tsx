@@ -1,11 +1,12 @@
 "use client"
 import { LoaderProfile } from "@/components/Shared";
-import { StepConfigUserProvider } from "@/contexts";
+import { StepConfigUserProvider, UserProvider } from "@/contexts";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { Link, User } from "@prisma/client";
 import { TreePalm } from "lucide-react";
 import { useEffect, useState } from "react";
 import { HandlerSteps, LinkProfile } from "./components";
+import { ProfileInfo } from "./components/ProfileInfo";
 
 
 export default function HomePage( ) {
@@ -41,17 +42,13 @@ export default function HomePage( ) {
     )
   }
   return (
-  <div>
+  <UserProvider>
     <div className="grid grid-cols-1 md:grid-cols-[60%_auto] gap-4 px-4">
       <div>
 
         <LinkProfile />
 
-        <div>
-          <p>porfile info</p>
-        <UserButton/>
-
-        </div>
+        <ProfileInfo onReload={setReload} />
         
 
         <div className="mt-20 flex flex-col items-center">
@@ -67,6 +64,6 @@ export default function HomePage( ) {
       </div>
 
     </div>
-  </div>
+  </UserProvider>
 );
 }
