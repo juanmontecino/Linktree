@@ -36,7 +36,7 @@ export default function HomePage( ) {
   if (isFirstVisit) {
     return (
      <StepConfigUserProvider>
-      <HandlerSteps onReload={() => setReload } />
+      <HandlerSteps onReload={() => setReload(true)} />
      </StepConfigUserProvider>
     )
   }

@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useStepConfig } from "@/hooks/useStepConfig";
 import { UploadButton } from "@/lib/uploadthing";
+import axios from "axios";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { toast } from "sonner";
 import { dataStepFourImages } from "./StepFour.data";
 
 // Interfaz para los datos extendidos de archivo subido
@@ -24,6 +27,47 @@ const [photoUrl, setPhotoUrl] = useState("")
 const [showUploadPhoto, setShowUploadPhoto] = useState(false)
 const [selectedPhoto, setSelectedPhoto] = useState("")
 
+const { setInfoUser, nextStep, infoUser } = useStepConfig()
+
+const handleImageSelect = (src: string) => {
+  setSelectedPhoto(src)
+  setInfoUser((prevInfoUser) => ({
+    ...prevInfoUser,
+    avatarUrl: src
+  }))
+}
+
+const handleContinue = async () => {
+  if (!name || !username) {
+    alert("Please fill all the fields")
+    return
+  }
+
+  setInfoUser((prevInfoUser) => ({
+    ...prevInfoUser,
+    name,
+    username
+  }))
+
+  try{
+    const response = await axios.post("/api/user", {
+      name: name,
+      username: username,
+      avatarUrl: infoUser.avatarUrl,
+      links : infoUser.platforms,
+      typeUser: infoUser.typeUser
+    })
+
+    if (response.status === 200) {
+      nextStep()
+    }
+  }
+  catch(error){
+    toast.error("This user already exists")
+    console.error(error)
+  }
+}
+
 console.log(photoUrl)
 
   return (
@@ -38,7 +82,7 @@ console.log(photoUrl)
             className={`flex flex-col items-center gap-2 p-1 rounded-full text-white transition-all duration-300 cursor-pointer
             ${selectedPhoto === src ? 'bg-violet-500' : 'hover:bg-violet-300'}
             `}
-            onClick={() => setSelectedPhoto(src)}
+            onClick={() => handleImageSelect(src)}
             >
             <Image src={src} alt="profile" width={300} height={300} className="rounded-full h-30 w-30"/>
              </div>
@@ -49,7 +93,7 @@ console.log(photoUrl)
             <div className={`flex flex-col items-center gap-2 p-1 rounded-full text-white transition-all duration-300 cursor-pointer
             ${selectedPhoto === photoUrl ? 'bg-violet-500' : 'hover:bg-violet-300'}
             `}
-              onClick = {() => setSelectedPhoto(photoUrl)}>
+              onClick = {() => handleImageSelect(photoUrl)}>
                 <Image src={photoUrl} alt="profile" width={300} height={300} className="rounded-full h-30 w-30 object-cover aspect-square"/>
             </div>
           )}
@@ -76,6 +120,10 @@ console.log(photoUrl)
                     console.log("Usando URL final (UFS):", finalUrl);
                     setPhotoUrl(finalUrl);
                     setSelectedPhoto(finalUrl);
+                    setInfoUser((prevInfoUser) => ({
+                      ...prevInfoUser,
+                      avatarUrl: finalUrl
+                    }));
                     setShowUploadPhoto(false);
                   } else {
                     console.error("No se recibió ufsUrl de la imagen");
@@ -109,7 +157,7 @@ console.log(photoUrl)
         </div>
 
         <div className="mt-6">
-          <Button className="w-full bg-purple-600" disabled={!selectedPhoto || !name || !username}>Continue</Button>
+          <Button className="w-full bg-purple-600" disabled={!selectedPhoto || !name || !username} onClick={handleContinue}>Continue</Button>
         </div>
     </div>
   )
