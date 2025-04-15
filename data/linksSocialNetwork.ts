@@ -1,4 +1,4 @@
-export const stepTwoData = [
+export const linksSocialNetwork= [
     {
        icon: "https://e53dh9apex.ufs.sh/f/xYYNeMWhqUXrrAKUER2whc8W3O902MasjfzupgGQYBDqvxom",
        name : "Instagram",

@@ -6,13 +6,10 @@ import { toast } from "sonner";
 import { useUserInfo } from "@/hooks/useUser";
 
 
-
 export  function TabDeleteImage(props : TabDeleteImageProps) {
   const {setShowDialog, setShowTab} = props
-    const {reloadUser} = useUserInfo()
+  const {reloadUser} = useUserInfo()
   
-
-
   const onDeletePhoto = async () => {
     await axios.patch("/api/update-user", {
       avatarUrl: "https://e53dh9apex.ufs.sh/f/xYYNeMWhqUXrjEGhmExypcW5N7l8d3qHoVfu1OTwKAFjCkiZ"

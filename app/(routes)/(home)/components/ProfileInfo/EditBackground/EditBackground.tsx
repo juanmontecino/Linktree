@@ -22,8 +22,6 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { toast } from "sonner";
 
-  
-
 
 export  function EditBackground(props: EditBackgroundProps) {
     const {onReload} = props;
@@ -37,8 +35,9 @@ export  function EditBackground(props: EditBackgroundProps) {
        })
        reloadUser()
        setShowDialog(false)
-       toast.success("Background updated!")
+       toast.success("Backgorund updated!")     
        onReload(true)
+       setPhotoUrl("")
     }
 
   return (
