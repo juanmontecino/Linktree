@@ -1,7 +1,7 @@
 "use client"
 import { LoaderProfile } from "@/components/Shared";
 import { StepConfigUserProvider, UserProvider } from "@/contexts";
-import { UserButton, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { Link, User } from "@prisma/client";
 import { TreePalm } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -54,7 +54,7 @@ export default function HomePage( ) {
         <div className="mt-20 flex flex-col items-center">
           <div className=" py-10 text-center justify-center flex flex-col items-center text-gray-400 font-semibold">
             <TreePalm className="w-20 h-20" strokeWidth={1}/>
-              <p>Welcome to the TreePalm</p>
+              <p>Welcome to JotaLink</p>
           </div>
         </div>
       </div>
