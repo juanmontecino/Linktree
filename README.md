@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Documentacion de la api https://go.postman.co/workspace/d3560f72-3e41-4295-8795-865755791960/documentation/29846482-a6bd5f0b-b97d-4d49-a944-31ab61042b71?entity=folder-800f1897-584a-4f60-bd82-b26fc0731fa9
 
-## Getting Started
+# Linktree Clone
 
-First, run the development server:
+Un clon de Linktree construido con Next.js, Tailwind CSS, Prisma y Clerk para autenticación.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# Aplicacion desplegada en :
+## https://linktree-five-gamma.vercel.app/
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Pasos
+### 1. Iniciar sesion / Crear cuenta:
+iniciar sesion con google/facebook o crear una cuenta.
+### 2. Realizar la confiracion basica del perfil:
+Definir nombre, username, redes sociales, links y un avatar
+### 3. Clickear sobre el boton "Copy"
+Si lo pegas sobre el navegador te llevara a la vision publica de tu perfil
+### 4.Modificar informacion
+Puedes modificar la informacion de tu perfil a gusto en sus respectivos apartados
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Características
 
-## Learn More
+- Perfiles personalizables con nombre, biografía, imagen y fondo
+- Gestión de enlaces a redes sociales
+- Vista previa en tiempo real del perfil
+- Autenticación con Clerk
+- Base de datos PostgreSQL con Prisma
+- Subida de imágenes con UploadThing
 
-To learn more about Next.js, take a look at the following resources:
+## Requisitos previos (para correr en local)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Node.js (v18 o superior)
+- npm (v9 o superior) o pnpm (v8 o superior)
+- PostgreSQL (local o servicio en la nube)
+- Cuenta en [Clerk](https://clerk.dev/) y [UploadThing](https://uploadthing.com/)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Instalación
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Clona el repositorio:
+git clone https://github.com/tu-usuario/juanmontecino-linktree.git
+cd juanmontecino-linktree
+npm install
