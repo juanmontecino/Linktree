@@ -34,8 +34,7 @@ export function StepThree() {
 
                     <input id={`${name}-input`}
                         type="text"
-                        placeholder={`${name} Username`}
-                        defaultValue={link}
+                        placeholder={`Ej: ${link} `}
                         className="w-full rounded-lg border p-2 text-sm"
                     />
             </div>
