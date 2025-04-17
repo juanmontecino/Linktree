@@ -35,7 +35,7 @@ export  function EditBackground(props: EditBackgroundProps) {
        })
        reloadUser()
        setShowDialog(false)
-       toast.success("Backgorund updated!")     
+       toast.success("Background updated!")     
        onReload(true)
        setPhotoUrl("")
     }

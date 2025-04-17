@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { UserProfileProps } from "./UserProfile.types";
-import { TreePalm } from "lucide-react";
+import { ExternalLink, TreePalm } from "lucide-react";
 import { MoreInfoProfile } from "./MoreInfoProfile";
+import Link from "next/link";
 
 
 export function UserProfile(props: UserProfileProps) {
@@ -30,25 +31,23 @@ export function UserProfile(props: UserProfileProps) {
         </div>
 
         <div>
-          <p className="font-semibold text-2xl text-blue-600">@{user.username}</p>
+          <p className="font-semibold text-2xl text-cyan-900 text-center">@{user.username}</p>
           {user?.bio && 
           <div className="mt-2">
-            <p className="text-center">{user.bio}</p>
+            <p className="text-center text-lg">{user.bio}</p>
           </div>
           }
         </div>
 
-        <div className="flex gap-5 mt-10 ">
+        <div className="flex flex-col gap-5 mt-10 ">
           {user.links.map((link) => (
-            <a
-              key={link.id}
-              href={link.link || ''}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white text-black rounded-lg px-4 py-2 text-center"
-            >
-              <Image src={link.icon || ''} alt={"icon"} width={60} height={60}  className="hover:scale-110 transition-all duration-200" />
-            </a>
+            <div key={link.id} className="bg-cyan-900 text-white w-[400px] px-10 py-4 items-center justify-center hover:bg-violet-200 hover:text-violet-900 transition-all duration-200 rounded-full">
+              <Link href={link.link || ""} target="_blank" className="flex justify-between items-center ">
+              <Image src={link.icon || " "} alt="Link Icon" width={30} height={30}  className=" hover:scale-110 transition-all duration-200 filter grayscale"/>
+              <p className="text-lg font-medium">{link.name}</p>
+              <ExternalLink className="h-4 w-4" />
+              </Link>
+            </div>
           ))}
         </div>
       </div>
