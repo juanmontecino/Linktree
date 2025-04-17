@@ -1,27 +1,27 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)'])
-// Crear un matcher para la ruta de UploadThing
-const isUploadthingRoute = createRouteMatcher(['/api/uploadthing(.*)'])
+import { clerkMiddleware } from '@clerk/nextjs/server';
 
 export default clerkMiddleware(async (auth, request) => {
-  // Ignorar la ruta de UploadThing en el middleware de Clerk
-  if (isUploadthingRoute(request)) {
-    return; // No hacer nada, permitir que la solicitud continúe
+  const url = new URL(request.url);
+  const path = url.pathname;
+  
+  // Rutas públicas: sign-in, sign-up, uploadthing, perfiles de usuario y API de info-user
+  const isAuthRoute = path.startsWith('/sign-in') || path.startsWith('/sign-up');
+  const isUploadthingRoute = path.startsWith('/api/uploadthing');
+  const isUserProfileRoute = /^\/[^\/]+$/.test(path);
+  const isUserInfoAPIRoute = path.startsWith('/api/info-user/');
+  
+  // Si es una ruta pública, permitir acceso sin autenticación
+  if (isAuthRoute || isUploadthingRoute || isUserProfileRoute || isUserInfoAPIRoute) {
+    return;
   }
-
-  const url = new URL(request.url)
-
-  if (url.pathname === "/" || !isPublicRoute(request)){
-    await auth.protect()
-  }
-})
+  
+  // Para cualquier otra ruta, proteger
+  await auth.protect();
+});
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
     '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-}
+};
