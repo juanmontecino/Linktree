@@ -37,22 +37,30 @@ const handleImageSelect = (src: string) => {
   }))
 }
 
+// Función para remover acentos/tildes
+const removeAccents = (str: string) => {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 const handleContinue = async () => {
   if (!name || !username) {
     alert("Please fill all the fields")
     return
   }
 
+  // Asegurarse de que el username no tenga tildes
+  const usernameWithoutAccents = removeAccents(username);
+
   setInfoUser((prevInfoUser) => ({
     ...prevInfoUser,
     name,
-    username
+    username: usernameWithoutAccents
   }))
 
   try{
     const response = await axios.post("/api/user", {
       name: name,
-      username: username,
+      username: usernameWithoutAccents,
       avatarUrl: infoUser.avatarUrl,
       links : infoUser.platforms,
       typeUser: infoUser.typeUser
@@ -66,6 +74,11 @@ const handleContinue = async () => {
     toast.error("This user already exists")
     console.error(error)
   }
+}
+
+const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Eliminar tildes al escribir
+  setUsername(removeAccents(e.target.value));
 }
 
 console.log(photoUrl)
@@ -152,7 +165,12 @@ console.log(photoUrl)
           <h3 className="text-lg my-3 text-center"> Add your username</h3>
           <div className="grid gap-4">
             <Input placeholder="Name" className="w-full" value={name} onChange={(e) => setName(e.target.value)} />
-            <Input placeholder="Username" className="w-full" value={username} onChange={(e) => setUsername(e.target.value)} />
+            <Input 
+              placeholder="Username" 
+              className="w-full" 
+              value={username} 
+              onChange={handleUsernameChange}
+            />
           </div>
         </div>
 

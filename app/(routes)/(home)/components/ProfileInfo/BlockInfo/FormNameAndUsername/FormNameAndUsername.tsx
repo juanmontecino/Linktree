@@ -19,8 +19,14 @@ import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea"
 import axios from "axios";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
-export  function FormNameAndUsername(props: FormNameAndUsernameProps) {
+// Función para remover acentos/tildes
+const removeAccents = (str: string) => {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+export function FormNameAndUsername(props: FormNameAndUsernameProps) {
     const {setOpenDialog} = props
     const {user, reloadUser} = useUserInfo()
 
@@ -33,12 +39,29 @@ export  function FormNameAndUsername(props: FormNameAndUsernameProps) {
         },
       })
      
+      // Observar cambios en el campo username para eliminar tildes
+      useEffect(() => {
+        const subscription = form.watch((value, { name }) => {
+          if (name === 'username') {
+            const cleanUsername = removeAccents(value.username || '');
+            if (cleanUsername !== value.username) {
+              form.setValue('username', cleanUsername);
+            }
+          }
+        });
+        
+        return () => subscription.unsubscribe();
+      }, [form]);
+     
       // 2. Define a submit handler.
       const onSubmit=async (values: z.infer<typeof formSchema>) => {
         try {
+            // Asegurarse de que el username no tenga tildes al enviar
+            const cleanUsername = removeAccents(values.username || '');
+            
             await axios.patch("/api/update-user", {
                 name: values.name,
-                username: values.username,
+                username: cleanUsername,
                 bio: values.bio,
             })
             setOpenDialog(false)
@@ -74,7 +97,15 @@ export  function FormNameAndUsername(props: FormNameAndUsernameProps) {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="@profile" {...field} />
+                <Input 
+                  placeholder="@profile" 
+                  {...field} 
+                  onChange={(e) => {
+                    // Eliminar tildes al escribir
+                    const value = removeAccents(e.target.value);
+                    field.onChange(value);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
